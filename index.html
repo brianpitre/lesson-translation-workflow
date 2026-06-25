@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson Video Localization — Team Workflow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Source+Serif+4:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#000000; --ink:#111111; --muted:#6d6d6d; --line:#e1e1e1;
+    --bg:#ffffff; --section:#f7f7f7;
+    --accent:#589a61; --accent-dark:#3d7345; --accent-dim:#d6ecd9; --accent-tint:#f2f8f3;
+    --warn:#8a5a12; --warn-line:#d6a44a; --warn-tint:#fbf4e6;
+    --paid:#6f5a16; --paid-tint:#f6efd8; --paid-line:#e2cf95;
+    --code-bg:#15171c; --code-ink:#e9edf1;
+    --radius:4px; --maxw:880px;
+    --sans:'Montserrat','Helvetica Neue',Arial,sans-serif;
+    --serif:'Source Serif 4',Georgia,serif;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+       line-height:1.62;font-size:15.5px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px 96px}
+
+  /* ── cover / hero ── */
+  header.cover{background:var(--black);color:#fff;padding:54px 0 44px;
+       border-bottom:4px solid var(--accent)}
+  header.cover .wrap{padding-bottom:0}
+  .eyebrow{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);
+       font-weight:600;margin:0 0 16px}
+  header.cover h1{font-family:var(--sans);font-weight:900;text-transform:uppercase;
+       font-size:40px;line-height:1.08;letter-spacing:-1px;margin:0 0 16px}
+  header.cover .sub{font-family:var(--serif);font-style:italic;font-size:19px;color:#d6dad8;
+       margin:0;max-width:60ch;line-height:1.5}
+  .meta{margin-top:24px;display:flex;flex-wrap:wrap;gap:8px}
+  .meta span{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;font-weight:600;
+       background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);
+       color:#cfd4d2;padding:6px 13px;border-radius:50px}
+
+  /* ── headings ── */
+  h2{font-family:var(--sans);font-weight:900;text-transform:uppercase;font-size:22px;
+       letter-spacing:-0.3px;line-height:1.2;margin:50px 0 14px;padding-left:13px;
+       border-left:4px solid var(--accent)}
+  h2 .n{color:var(--accent);margin-right:4px}
+  h3{font-size:16px;font-weight:700;margin:24px 0 7px}
+  p{margin:0 0 14px}
+  a{color:var(--accent-dark);text-decoration:none;font-weight:500}
+  a:hover{text-decoration:underline}
+  .lead{font-family:var(--serif);font-size:18.5px;line-height:1.55;color:#2b2f33;margin:28px 0}
+  .lead strong{font-family:var(--sans);font-weight:600}
+
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);
+       padding:22px 24px;margin:18px 0}
+  .card.tinted{background:var(--section)}
+  .kicker{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;
+       color:var(--muted);margin:0 0 12px}
+  .toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px 22px}
+  .toc a{display:block;padding:4px 0;font-size:14.5px;color:var(--ink);font-weight:600}
+  .toc a .num{color:var(--accent);font-variant-numeric:tabular-nums;margin-right:9px;font-weight:700}
+
+  /* ── pipeline ── */
+  .pipe{margin:8px 0;padding-left:6px}
+  .row{position:relative;padding:0 0 14px 34px}
+  .row:before{content:"";position:absolute;left:10px;top:6px;bottom:-6px;width:2px;background:var(--line)}
+  .row:last-child:before{display:none}
+  .dot{position:absolute;left:3px;top:4px;width:15px;height:15px;border-radius:50%;
+       background:var(--accent);border:3px solid var(--bg);box-shadow:0 0 0 1px var(--line)}
+  .stage{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:11px 15px;
+       display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .stage b{font-size:14.5px;text-transform:uppercase;letter-spacing:.3px}
+  .stage .sub{color:var(--muted);font-size:13px}
+  .gate-row .dot{background:var(--accent-dark)}
+  .gate{background:var(--accent-tint);border:1px solid var(--accent-dim);border-radius:var(--radius);
+       padding:9px 14px;color:var(--accent-dark);font-size:13.5px;font-weight:600;
+       display:flex;align-items:center;gap:9px}
+  .gate .chk{font-weight:700}
+  .tag{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+       background:var(--accent);color:#fff;padding:3px 8px;border-radius:50px;margin-left:auto}
+  .paid{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--paid);
+       background:var(--paid-tint);border:1px solid var(--paid-line);padding:3px 9px;border-radius:50px;margin-left:auto}
+
+  .step{margin:16px 0}
+  .step .head{display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+  .step .badge{flex:none;width:30px;height:30px;border-radius:var(--radius);background:var(--accent);
+       color:#fff;display:grid;place-items:center;font-weight:900;font-size:15px}
+  .step .head h3{margin:0;text-transform:uppercase;letter-spacing:.3px;font-weight:700}
+  .goal{color:var(--muted);margin:2px 0 10px}
+
+  pre{background:var(--code-bg);color:var(--code-ink);border-radius:var(--radius);padding:14px 16px;
+       overflow:auto;font-family:var(--mono);font-size:13px;line-height:1.6;margin:10px 0;
+       white-space:pre-wrap;overflow-wrap:anywhere}
+  code{font-family:var(--mono);font-size:.88em;background:var(--section);border:1px solid var(--line);
+       padding:1px 5px;border-radius:3px}
+  pre code{background:none;border:0;padding:0}
+
+  .callout{border-left:4px solid var(--accent);background:var(--accent-tint);border-radius:0 var(--radius) var(--radius) 0;
+       padding:12px 16px;margin:12px 0}
+  .callout.warn{border-color:var(--warn-line);background:var(--warn-tint)}
+  .callout .lbl{font-weight:700;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;
+       display:block;margin-bottom:4px;color:var(--accent-dark)}
+  .callout.warn .lbl{color:var(--warn)}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--section);font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;
+       color:var(--muted);font-weight:700}
+  tbody tr:last-child td{border-bottom:0}
+  td code{white-space:nowrap}
+
+  ul.checks{list-style:none;padding:0;margin:6px 0}
+  ul.checks li{display:flex;gap:11px;padding:8px 0;border-bottom:1px solid var(--line)}
+  ul.checks li:last-child{border-bottom:0}
+  ul.checks input{margin-top:3px;width:16px;height:16px;accent-color:var(--accent);flex:none}
+
+  .rules li{margin:7px 0}
+  .rules b{color:var(--accent-dark)}
+
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);
+       font-size:13px}
+  @media print{
+    body{font-size:11pt}
+    header.cover,.card,pre,.gate,.callout,th,.badge,.tag,.paid{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    h2{break-after:avoid} .step,table,.callout{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="wrap">
+    <p class="eyebrow">Lesson Video Localization</p>
+    <h1>Translating a lesson into another language — voice &amp; lips</h1>
+    <p class="sub">The standard operating procedure: same teacher, same face, now speaking the target language — with three independent accuracy checks built in so it stays right across hundreds of videos.</p>
+    <div class="meta">
+      <span>Audience · localization team</span>
+      <span>Updated 2026-06-25</span>
+      <span>Scripture per language</span>
+      <span>SOP · workflows/translate_lecture.md</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <p class="lead">Probabilistic AI does the reasoning — transcription, translation, voicing. Deterministic checks verify each one. The discipline that keeps quality high at scale is simple: <strong>every step that can introduce an error is verified by a different engine than produced it, and every paid step sits behind a cheap check.</strong></p>
+
+  <div class="card tinted">
+    <p class="kicker">On this page</p>
+    <nav class="toc">
+      <a href="#flow"><span class="num">01</span>The pipeline at a glance</a>
+      <a href="#checks"><span class="num">02</span>The three checks</a>
+      <a href="#s1"><span class="num">03</span>Stage 1 — Transcribe</a>
+      <a href="#s2"><span class="num">04</span>Stage 2 — Translate</a>
+      <a href="#s3"><span class="num">05</span>Stage 3 — Re-voice</a>
+      <a href="#s4"><span class="num">06</span>Stage 4 — Lip-sync</a>
+      <a href="#s5"><span class="num">07</span>Stage 5 — Finish</a>
+      <a href="#rules"><span class="num">08</span>Non-negotiables</a>
+      <a href="#fixes"><span class="num">09</span>Common failures &amp; fixes</a>
+      <a href="#checklist"><span class="num">10</span>Per-video checklist</a>
+      <a href="#cost"><span class="num">11</span>Cost &amp; tools</a>
+    </nav>
+  </div>
+
+  <h2 id="flow"><span class="n">01</span> The pipeline at a glance</h2>
+  <p>Five stages, three checkpoints. Read it top to bottom — each check (in green) clears the work before it moves to the next, more expensive stage.</p>
+  <div class="card">
+    <div class="pipe">
+      <div class="row"><span class="dot"></span><div class="stage"><b>1 · Transcribe source</b><span class="sub">Scribe v1 + Whisper large-v3</span></div></div>
+      <div class="row gate-row"><span class="dot"></span><div class="gate"><span class="chk">✓</span> Check transcription — reconcile the two ASRs</div></div>
+      <div class="row"><span class="dot"></span><div class="stage"><b>2 · Translate</b><span class="sub">scripture → published version, tight to timing</span></div></div>
+      <div class="row gate-row"><span class="dot"></span><div class="gate"><span class="chk">✓</span> Check translation — blind round-trip + independent judge <span class="tag">new</span></div></div>
+      <div class="row"><span class="dot"></span><div class="stage"><b>3 · Re-voice in the clone</b><span class="sub">ElevenLabs · short chunks</span><span class="paid">paid</span></div></div>
+      <div class="row gate-row"><span class="dot"></span><div class="gate"><span class="chk">✓</span> Check voicing — transcribe the audio back</div></div>
+      <div class="row"><span class="dot"></span><div class="stage"><b>4 · Lip-sync the real footage</b><span class="sub">fal sync-lipsync v2pro, conform</span><span class="paid">paid</span></div></div>
+      <div class="row"><span class="dot"></span><div class="stage"><b>5 · Finish &amp; deliver</b><span class="sub">QC specs, frame, color</span></div></div>
+    </div>
+    <p style="margin:14px 0 0;color:var(--muted);font-size:13.5px">Audio-only dub? Run stages 1–3 and the first two checks, then deliver — skip lip-sync.</p>
+  </div>
+
+  <h2 id="checks"><span class="n">02</span> The three checks (why this stays accurate)</h2>
+  <p>Each check runs on a <strong>different engine</strong> than the step it verifies, so nothing grades its own work. This is the heart of the system.</p>
+  <table>
+    <thead><tr><th>Check</th><th>Verifies with</th><th>Catches</th></tr></thead>
+    <tbody>
+      <tr><td><b>1 · Transcription</b></td><td>A second ASR (Whisper vs Scribe)</td><td>Mis-heard names, numbers, scripture references</td></tr>
+      <tr><td><b>2 · Translation</b></td><td>A non-Claude model (Gemini) — blind back-translation + judgment</td><td>Dropped / added / reversed meaning, wrong references</td></tr>
+      <tr><td><b>3 · Voicing</b></td><td>Transcribe the generated audio back</td><td>Voice-clone hallucination or drift</td></tr>
+    </tbody>
+  </table>
+  <div class="callout warn">
+    <span class="lbl">Important — checks build on each other</span>
+    The translation check sits on the <em>same</em> transcript the translation used, so it can't catch a transcription error. That's why Check 1 is non-negotiable: get the words right first, and the rest of the chain stays clean.
+  </div>
+
+  <h2 id="s1"><span class="n">03</span> Stage 1 — Transcribe (dual-ASR)</h2>
+  <div class="step">
+    <div class="head"><span class="badge">1</span><h3>Get the source words exactly right</h3></div>
+    <p class="goal">This is the foundation. Every later stage inherits these words — a wrong name here becomes a wrong name in the final video. Run two transcribers and reconcile.</p>
+<pre><code>.venv/bin/python tools/extract_audio.py [video] --out .tmp/NAME.wav
+.venv/bin/python tools/transcribe_diarize.py [video] --language [iso] --out .tmp/NAME_scribe.json
+.venv/bin/python tools/transcribe_vo.py .tmp/NAME.wav --model large-v3 --out .tmp/NAME_whisper.json</code></pre>
+    <p><b>Scribe</b> (ElevenLabs <code>scribe_v1</code>) is primary — best accuracy, punctuation, proper nouns. <b>Whisper large-v3</b> is the cross-check (run it on fal <code>wizper</code> for GPU speed if local is slow).</p>
+  </div>
+  <div class="callout">
+    <span class="lbl">✓ Check 1 — reconcile the transcripts</span>
+    Diff the two. <strong>Where they disagree is where the errors hide</strong> — focus on proper nouns, numbers, and scripture references. Pick the correct reading (verify against the audio if unsure) and lock one clean source transcript before translating.
+  </div>
+
+  <h2 id="s2"><span class="n">04</span> Stage 2 — Translate</h2>
+  <div class="step">
+    <div class="head"><span class="badge">2</span><h3>Translate segment by segment</h3></div>
+    <p class="goal">Preserve meaning, register, and timing. Write the aligned source + target into a dub-script JSON so every later step shares the same segments.</p>
+    <ul>
+      <li><b>Scripture → the published version for the target language</b> (table below) — never a literal back-translation. Identify the reference and drop in the canonical verse.</li>
+      <li>Keep theological terms and proper names correct and consistent.</li>
+      <li>Match spoken duration per segment — length drift hurts lip-sync. Trim filler and clean disfluencies so it reads naturally.</li>
+    </ul>
+    <table>
+      <thead><tr><th>Target language</th><th>Bible version</th><th>Use for <code>--scripture-version</code></th></tr></thead>
+      <tbody>
+        <tr><td>English</td><td>New International Version</td><td><code>NIV</code></td></tr>
+        <tr><td>Spanish</td><td>Reina-Valera 1960</td><td><code>RVR1960</code></td></tr>
+        <tr><td>Italian</td><td>Nuova Riveduta 2006</td><td><code>NR2006</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="step">
+    <div class="head"><span class="badge" style="background:var(--accent-dark)">✓</span><h3>Check 2 — the translation accuracy double-check <span class="tag" style="background:var(--accent-dark)">new</span></h3></div>
+    <p class="goal">An independent model (Gemini — not the one that translated) does a blind round-trip back-translation <em>and</em> scores each segment for faithfulness. Review only what it flags, fix, re-run.</p>
+<pre><code># set --scripture-version to the target language's version (NIV / RVR1960 / NR2006)
+.venv/bin/python tools/check_translation.py --script .tmp/NAME_dubscript.json \
+   --source-key es --target-key en --source-lang Spanish --target-lang English \
+   --scripture-version NIV --model google/gemini-2.5-pro --out .tmp/NAME_check</code></pre>
+    <p>It produces a per-segment scorecard (<code>.md</code> + <code>.json</code>) and lists only the segments to review. It knows scripture is intentionally in the published version (won't flag the wording) and that filler may be cleaned (won't flag trims).</p>
+  </div>
+  <div class="callout">
+    <span class="lbl">✓ Check 2 — pass criteria</span>
+    No <code>major</code> flags outstanding. Read every flagged segment against the source, fix the translation, and re-run until only intended differences remain. This is the cheapest place to catch a meaning error — before a cent is spent on voice or video.
+  </div>
+
+  <h2 id="s3"><span class="n">05</span> Stage 3 — Re-voice in the clone</h2>
+  <div class="step">
+    <div class="head"><span class="badge">3</span><h3>Speak the translation in the teacher's own voice <span class="paid">first paid step</span></h3></div>
+    <p class="goal">Generate the target-language audio in the speaker's ElevenLabs clone, conformed to the original timing.</p>
+<pre><code>.venv/bin/python tools/build_podcast_dub.py --script .tmp/NAME_dubscript.json \
+   --work .tmp/NAME_work --out-clean OUT_clean.mp3 --out-timed OUT_timed.mp3 --mode both \
+   --split-chars 180 --stability 0.7 --similarity-boost 0.9 --speaker-boost</code></pre>
+  </div>
+  <div class="callout warn">
+    <span class="lbl">⚠ Cross-lingual clones drift — use short chunks</span>
+    When a clone speaks a language it was <strong>not</strong> trained on (e.g. a Spanish-trained teacher voiced in English), it garbles, loops, or drifts into foreign-sounding audio on long passages — <em>even at default settings</em>. The fix is <code>--split-chars 180</code> with <code>--stability 0.7 --similarity-boost 0.9 --speaker-boost</code>: short inputs re-anchor the model so it can't wander. (Voicing into the clone's own native language doesn't need this.)
+  </div>
+  <div class="callout">
+    <span class="lbl">✓ Check 3 — transcribe the audio back</span>
+    Transcribe the generated audio (fal <code>wizper</code> and/or Scribe) and diff against the script. <strong>Two ASRs flagging garble in the same spot = real bad audio</strong> → re-voice that segment. One ASR alone gives false alarms on accented speech. Intentional repetition (e.g. "how long ×3") is fine.
+  </div>
+
+  <h2 id="s4"><span class="n">06</span> Stage 4 — Lip-sync the real footage</h2>
+  <div class="step">
+    <div class="head"><span class="badge">4</span><h3>Re-sync the actual footage to the new audio <span class="paid">paid · ~$3/min</span></h3></div>
+    <p class="goal">The standard recipe — verified to beat the alternatives on color, motion, and sync.</p>
+<pre><code>.venv/bin/python tools/fal_lipsync.py --video [video] --audio [revoiced].mp3 --out "OUT.mp4" \
+   --conform --model fal-ai/sync-lipsync/v2 --lipsync-version lipsync-2-pro</code></pre>
+    <p><code>--conform</code> matches the voice to the video's exact length (pitch-preserved) and runs with no remap → native-speed footage, frame-locked to the source. Output is auto re-tagged to the correct color space.</p>
+  </div>
+  <div class="callout warn">
+    <span class="lbl">⚠ Don't substitute the wrong model</span>
+    Never use <b>omnihuman</b> (it regenerates an avatar from a still — wrong tool) or <b>Kling</b> (60-second cap, re-times to 30fps, crops the frame). Only lip-sync on-camera face shots; slides and B-roll just take the new audio track.
+  </div>
+
+  <h2 id="s5"><span class="n">07</span> Stage 5 — Finish &amp; deliver</h2>
+  <div class="step">
+    <div class="head"><span class="badge">5</span><h3>Quality-check and hand off</h3></div>
+    <p class="goal">Confirm the output is frame-locked to the source (same duration, 1080p, fps), spot-check a frame, verify color tags, and deliver. Because it stays frame-locked, the After Effects mouth-only hybrid is available free on hero shots if a face shot needs perfection.</p>
+  </div>
+  <div class="callout">
+    <span class="lbl">✓ Final gate — native-speaker QA</span>
+    The automated checks raise the floor; they don't replace a human ear. Every language gets a native speaker reviewing the translation and the final cut before it ships.
+  </div>
+
+  <h2 id="rules"><span class="n">08</span> Non-negotiables</h2>
+  <ul class="rules">
+    <li><b>Get consent</b> before cloning anyone's voice — it's their likeness, and ElevenLabs requires it.</li>
+    <li><b>Prove a new language or voice on a ~1-minute clip first</b> (~$1) before committing a full lesson.</li>
+    <li><b>Never skip Check 1.</b> A wrong word in the transcript silently becomes a wrong word in the final video.</li>
+    <li><b>Clear every <code>major</code> translation flag</b> before voicing. Errors are cheapest to fix as text.</li>
+    <li><b>Scripture always comes from the published version</b> for that language (English NIV · Spanish Reina-Valera 1960 · Italian Nuova Riveduta 2006), never a back-translation.</li>
+    <li><b>Native-speaker QA</b> is the last word on every language.</li>
+  </ul>
+
+  <h2 id="fixes"><span class="n">09</span> Common failures &amp; fixes</h2>
+  <table>
+    <thead><tr><th>What you see</th><th>Cause</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td>Garbled, looped, or foreign-sounding dub audio</td><td>Cross-lingual clone drifting on long chunks</td><td><code>--split-chars 180</code> + <code>--stability 0.7</code>, then re-check</td></tr>
+      <tr><td>Translation reads fine but meaning is subtly off</td><td>Mistranslation</td><td>Check 2 flags it — review and fix the flagged segment</td></tr>
+      <tr><td>Wrong name or number in the translation</td><td>Transcription error upstream</td><td>Check 1 (dual-ASR) — Check 2 cannot catch this</td></tr>
+      <tr><td>Soft / mushy lip-synced video</td><td>Low-bitrate input, or remap time-stretch</td><td>High-bitrate H.264 input + <code>--conform</code> (no remap)</td></tr>
+      <tr><td>Contrast or levels shift after lip-sync</td><td>Model strips color metadata</td><td>Handled automatically (re-tagged bt709) — verify in QC</td></tr>
+      <tr><td>Mouth "pops" at segment boundaries</td><td>Per-chunk lip-sync</td><td>One continuous lip-sync pass; chunk only for timing</td></tr>
+      <tr><td>Dub sounds rushed</td><td>Audio over-compressed to fit</td><td>Tighten the translation + <code>--speed 1.05–1.08</code>, re-measure</td></tr>
+      <tr><td><code>403 — Exhausted balance</code> from fal</td><td>fal account out of credits</td><td>Top up at fal.ai/dashboard/billing</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="checklist"><span class="n">10</span> Per-video checklist</h2>
+  <div class="card">
+    <ul class="checks">
+      <li><input type="checkbox"><span>Consent confirmed; voice clone resolves (<code>--list-voices</code>)</span></li>
+      <li><input type="checkbox"><span>New language/voice? Proved on a ~1-min clip first</span></li>
+      <li><input type="checkbox"><span>Dual-ASR transcribe (Scribe + Whisper large-v3)</span></li>
+      <li><input type="checkbox"><span><b>Check 1:</b> transcripts reconciled; names/numbers/refs verified</span></li>
+      <li><input type="checkbox"><span>Translated; scripture in the language's published version; timing tight; disfluencies cleaned</span></li>
+      <li><input type="checkbox"><span><b>Check 2:</b> <code>check_translation.py</code> run; all <code>major</code> flags resolved</span></li>
+      <li><input type="checkbox"><span>Re-voiced in clone (cross-lingual? <code>--split-chars 180</code>)</span></li>
+      <li><input type="checkbox"><span><b>Check 3:</b> transcribe-back diff clean (no shared-spot garble)</span></li>
+      <li><input type="checkbox"><span>Lip-synced — v2pro <code>lipsync-2-pro</code>, conform / no-remap</span></li>
+      <li><input type="checkbox"><span>QC: frame-locked, 1080p, color tags; spot-checked a frame</span></li>
+      <li><input type="checkbox"><span>Native-speaker QA on translation + final cut</span></li>
+      <li><input type="checkbox"><span>Delivered</span></li>
+    </ul>
+  </div>
+
+  <h2 id="cost"><span class="n">11</span> Cost &amp; tools</h2>
+  <p><b>Per 45-min lesson (default tiers):</b> transcription &lt;$1 · translation check ~$1 · ElevenLabs voicing a few $ · lip-sync (v2pro) ~$135, or ~$32 at the budget tier · optional upscale ~$27. <b>Audio-only dub:</b> drop the lip-sync line — a few dollars total.</p>
+  <table>
+    <thead><tr><th>Tool</th><th>Does</th></tr></thead>
+    <tbody>
+      <tr><td><code>extract_audio.py</code></td><td>Pull a 16 kHz mono WAV for transcription</td></tr>
+      <tr><td><code>transcribe_diarize.py</code></td><td>Scribe v1 transcription (primary)</td></tr>
+      <tr><td><code>transcribe_vo.py</code></td><td>Whisper transcription (cross-check)</td></tr>
+      <tr><td><code>check_translation.py</code></td><td>Independent translation accuracy check (Check 2)</td></tr>
+      <tr><td><code>build_podcast_dub.py</code></td><td>Re-voice segments in the clone, timed</td></tr>
+      <tr><td><code>revoice_elevenlabs.py</code></td><td>Re-voice a single continuous piece</td></tr>
+      <tr><td><code>fal_lipsync.py</code></td><td>Re-sync the real footage to the new audio</td></tr>
+    </tbody>
+  </table>
+
+  <footer>
+    <p>This guide summarizes the full SOP at <code>workflows/translate_lecture.md</code>. When you discover a better method or a new failure mode, update the workflow doc and the <code>translate-lecture</code> tuning log so the whole team inherits it. Tick boxes on this page are for your own working session — they don't save.</p>
+  </footer>
+
+</div>
+</body>
+</html>
