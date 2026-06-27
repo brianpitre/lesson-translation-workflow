@@ -122,7 +122,8 @@
   footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);
        font-size:13px}
   @media (max-width:640px){
-    /* let inline code snippets wrap so tables don't force the page wider than the viewport */
+    /* let long unbroken tokens (code, URLs, paths) wrap so tables don't force the page wider than the viewport */
+    td,th{overflow-wrap:anywhere}
     td code{white-space:normal;overflow-wrap:anywhere}
   }
   @media print{
